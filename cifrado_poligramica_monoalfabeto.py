@@ -66,7 +66,7 @@ def descifrar_par(tabla, caracter1, caracter2):
     else:
         return tabla[fila1][col2] + tabla[fila2][col1]
 
-def cifrar(texto, clave):
+def cifrarPlayfair(texto, clave):
     tabla = generar_tabla(clave)
     texto_preparado = preparar_texto(texto)
     texto_cifrado = ""
@@ -76,7 +76,7 @@ def cifrar(texto, clave):
 
     return texto_cifrado
 
-def descifrar(texto, clave):
+def descifrarPlayfair(texto, clave):
     tabla = generar_tabla(clave)
     texto_descifrado = ""
 
@@ -101,7 +101,7 @@ def playfair():
             clave = ''.join(sorted(set(clave), key=clave.index))
 
             mensaje = input("Ingrese el mensaje a cifrar: ")
-            mensaje_cifrado = cifrar(mensaje, clave)
+            mensaje_cifrado = cifrarPlayfair(mensaje, clave)
             print("Mensaje cifrado:", mensaje_cifrado)
 
         elif opcion == "2":
@@ -110,7 +110,7 @@ def playfair():
             clave = ''.join(sorted(set(clave), key=clave.index))
 
             mensaje_cifrado = input("Ingrese el mensaje cifrado: ")
-            mensaje_descifrado = descifrar(mensaje_cifrado, clave)
+            mensaje_descifrado = descifrarPlayfair(mensaje_cifrado, clave)
             print("Mensaje descifrado:", mensaje_descifrado)
             print("\nRecordar que si el mensaje descifrado es diferente que el original ")
             print("es porque en la logica de Playfair se evita el uso de J y se sustituye por la i")

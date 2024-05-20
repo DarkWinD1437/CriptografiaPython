@@ -115,7 +115,7 @@ def generar_clave():
             break
     return clave
 
-def cifrar(texto_plano, clave):
+def cifrarPO(texto_plano, clave):
     texto_cifrado = ''
     for caracter in texto_plano.lower():
         if caracter in clave:
@@ -125,7 +125,7 @@ def cifrar(texto_plano, clave):
             texto_cifrado += caracter
     return texto_cifrado
 
-def descifrar(texto_cifrado, clave):
+def descifrarPO(texto_cifrado, clave):
     texto_descifrado = ''
     for caracter in texto_cifrado:
         for letra, homofono in clave.items():
@@ -137,7 +137,6 @@ def descifrar(texto_cifrado, clave):
     return texto_descifrado
 
 def primerOrden():
-    clave = generar_clave()
     while True:
         print("\nBienvenido al Cifrado por Sustitución Homófona de primer orden")
         print("\nOpciones:")
@@ -146,15 +145,15 @@ def primerOrden():
         print("3. Salir")
 
         opcion = input("Ingrese una opción: ")
-
+        clave = generar_clave()
         if opcion == "1":
             mensaje = input("Ingrese el mensaje a cifrar: ")
-            texto_cifrado = cifrar(mensaje, clave)
+            texto_cifrado = cifrarPO(mensaje, clave)
             print("Texto cifrado:", texto_cifrado)
 
         elif opcion == "2":
             mensaje_cifrado = input("Ingrese el mensaje cifrado: ")
-            texto_descifrado = descifrar(mensaje_cifrado, clave)
+            texto_descifrado = descifrarPO(mensaje_cifrado, clave)
             print("Texto descifrado:", texto_descifrado)
 
         elif opcion == "3":
@@ -170,7 +169,7 @@ if __name__ == "__main__":
 ##fin de cifrado por sustitucion homofono de primer orden
 
 ##Cifrado por sustitucion homofono de orden mayor
-def cifrar(mensaje, orden, diccionario):
+def cifrarOM(mensaje, orden, diccionario):
     mensaje_cifrado = ""
     for caracter in mensaje:
         if caracter in diccionario:
@@ -211,7 +210,7 @@ def backtrack(mensaje_cifrado, diccionario_inverso, path, start, orden, mensaje_
         path.pop()
     return None
 
-def descifrar(mensaje_cifrado, orden, diccionario, mensaje_original):
+def descifrarOM(mensaje_cifrado, orden, diccionario, mensaje_original):
     diccionario_inverso = construir_diccionario_inverso(diccionario, orden)
     mensaje_descifrado = backtrack(mensaje_cifrado, diccionario_inverso, [], 0, orden, mensaje_original)
     return mensaje_descifrado if mensaje_descifrado else "No se pudo descifrar correctamente."
@@ -270,7 +269,7 @@ def ordenMayor():
                         print("El orden del cifrado debe ser un número entero positivo.")
                 except ValueError:
                     print("Entrada no válida. Ingrese un número entero.")
-            texto_cifrado = cifrar(mensaje_original, orden, diccionario)
+            texto_cifrado = cifrarOM(mensaje_original, orden, diccionario)
             print("Texto cifrado:", texto_cifrado)
 
         elif opcion == "2":
@@ -288,7 +287,7 @@ def ordenMayor():
                         print("El orden del cifrado debe ser un número entero positivo.")
                 except ValueError:
                     print("Entrada no válida. Ingrese un número entero.")
-            texto_descifrado = descifrar(mensaje_cifrado, orden, diccionario, mensaje_original)
+            texto_descifrado = descifrarOM(mensaje_cifrado, orden, diccionario, mensaje_original)
             print("Texto descifrado:", texto_descifrado)
 
         elif opcion == "3":
@@ -304,9 +303,8 @@ if __name__ == "__main__":
 ##Fin de Cifrado por sustitucion homofono de orden mayor
 
 ##Cifrado por sustitucion homofono de segundo orden
-import random
 
-def cifrar(mensaje, diccionario):
+def cifrarSO(mensaje, diccionario):
     mensaje_cifrado = ""
     for caracter in mensaje:
         if caracter in diccionario:
@@ -325,7 +323,7 @@ def construir_diccionario_inverso(diccionario):
             diccionario_inverso[homofono].append(clave)
     return diccionario_inverso
 
-def backtrack(mensaje_cifrado, diccionario_inverso, path, start, mensaje_original):
+def backtrackSO(mensaje_cifrado, diccionario_inverso, path, start, mensaje_original):
     if start == len(mensaje_cifrado):
         posible_descifrado = ''.join(path)
         return posible_descifrado if posible_descifrado == mensaje_original else None
@@ -334,21 +332,21 @@ def backtrack(mensaje_cifrado, diccionario_inverso, path, start, mensaje_origina
     if homofono in diccionario_inverso:
         for opcion in diccionario_inverso[homofono]:
             path.append(opcion)
-            resultado = backtrack(mensaje_cifrado, diccionario_inverso, path, start + 1, mensaje_original)
+            resultado = backtrackSO(mensaje_cifrado, diccionario_inverso, path, start + 1, mensaje_original)
             if resultado:
                 return resultado
             path.pop()
     else:
         path.append(homofono)  # Agregar el caracter original si no hay homófono
-        resultado = backtrack(mensaje_cifrado, diccionario_inverso, path, start + 1, mensaje_original)
+        resultado = backtrackSO(mensaje_cifrado, diccionario_inverso, path, start + 1, mensaje_original)
         if resultado:
             return resultado
         path.pop()
     return None
 
-def descifrar(mensaje_cifrado, diccionario, mensaje_original):
+def descifrarSO(mensaje_cifrado, diccionario, mensaje_original):
     diccionario_inverso = construir_diccionario_inverso(diccionario)
-    mensaje_descifrado = backtrack(mensaje_cifrado, diccionario_inverso, [], 0, mensaje_original)
+    mensaje_descifrado = backtrackSO(mensaje_cifrado, diccionario_inverso, [], 0, mensaje_original)
     return mensaje_descifrado if mensaje_descifrado else "No se pudo descifrar correctamente."
 
 def segundoOrden():
@@ -395,7 +393,7 @@ def segundoOrden():
 
         if opcion == "1":
             mensaje_original = input("Ingrese el mensaje a cifrar: ")
-            texto_cifrado = cifrar(mensaje_original, diccionario)
+            texto_cifrado = cifrarSO(mensaje_original, diccionario)
             print("Texto cifrado:", texto_cifrado)
 
         elif opcion == "2":
@@ -404,7 +402,7 @@ def segundoOrden():
                 continue
 
             mensaje_cifrado = input("Ingrese el mensaje cifrado: ")
-            texto_descifrado = descifrar(mensaje_cifrado, diccionario, mensaje_original)
+            texto_descifrado = descifrarSO(mensaje_cifrado, diccionario, mensaje_original)
             print("Texto descifrado:", texto_descifrado)
 
         elif opcion == "3":
