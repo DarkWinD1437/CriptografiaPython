@@ -169,54 +169,54 @@ if __name__ == "__main__":
 ##fin de cifrado por sustitucion homofono de primer orden
 
 ##Cifrado por sustitucion homofono de orden mayor
-def cifrarOM(mensaje, orden, diccionario):
-    mensaje_cifrado = ""
-    for caracter in mensaje:
-        if caracter in diccionario:
-            homofonos = diccionario[caracter]
-            mensaje_cifrado += random.choice(homofonos) * orden
+def cifrarOM(mensaje_om, orden_om, diccionario_om):
+    mensaje_cifrado_om = ""
+    for caracter in mensaje_om:
+        if caracter in diccionario_om:
+            homofonos = diccionario_om[caracter]
+            mensaje_cifrado_om += random.choice(homofonos) * orden_om
         else:
-            mensaje_cifrado += caracter * orden  # Mantener caracteres no definidos
-    return mensaje_cifrado
+            mensaje_cifrado_om += caracter * orden_om  # Mantener caracteres no definidos
+    return mensaje_cifrado_om
 
-def construir_diccionario_inverso(diccionario, orden):
-    diccionario_inverso = {}
-    for clave, valores in diccionario.items():
+def construir_diccionario_inverso_om(diccionario_om, orden_om):
+    diccionario_inverso_om = {}
+    for clave, valores in diccionario_om.items():
         for valor in valores:
-            clave_repetida = valor * orden
-            if clave_repetida not in diccionario_inverso:
-                diccionario_inverso[clave_repetida] = []
-            diccionario_inverso[clave_repetida].append(clave)
-    return diccionario_inverso
+            clave_repetida = valor * orden_om
+            if clave_repetida not in diccionario_inverso_om:
+                diccionario_inverso_om[clave_repetida] = []
+            diccionario_inverso_om[clave_repetida].append(clave)
+    return diccionario_inverso_om
 
-def backtrack(mensaje_cifrado, diccionario_inverso, path, start, orden, mensaje_original):
-    if start == len(mensaje_cifrado):
-        posible_descifrado = ''.join(path)
-        return posible_descifrado if posible_descifrado == mensaje_original else None
+def backtrack(mensaje_cifrado_om, diccionario_inverso_om, path, start, orden_om, mensaje_original_om):
+    if start == len(mensaje_cifrado_om):
+        posible_descifrado_om = ''.join(path)
+        return posible_descifrado_om if posible_descifrado_om == mensaje_original_om else None
 
-    homofono = mensaje_cifrado[start:start+orden]
-    if homofono in diccionario_inverso:
-        for opcion in diccionario_inverso[homofono]:
+    homofono = mensaje_cifrado_om[start:start+orden_om]
+    if homofono in diccionario_inverso_om:
+        for opcion in diccionario_inverso_om[homofono]:
             path.append(opcion)
-            resultado = backtrack(mensaje_cifrado, diccionario_inverso, path, start + orden, orden, mensaje_original)
+            resultado = backtrack(mensaje_cifrado_om, diccionario_inverso_om, path, start + orden_om, orden_om, mensaje_original_om)
             if resultado:
                 return resultado
             path.pop()
     else:
         path.append(homofono[0])  # Agregar el primer caracter si no hay homófono
-        resultado = backtrack(mensaje_cifrado, diccionario_inverso, path, start + orden, orden, mensaje_original)
+        resultado = backtrack(mensaje_cifrado_om, diccionario_inverso_om, path, start + orden_om, orden_om, mensaje_original_om)
         if resultado:
             return resultado
         path.pop()
     return None
 
-def descifrarOM(mensaje_cifrado, orden, diccionario, mensaje_original):
-    diccionario_inverso = construir_diccionario_inverso(diccionario, orden)
-    mensaje_descifrado = backtrack(mensaje_cifrado, diccionario_inverso, [], 0, orden, mensaje_original)
-    return mensaje_descifrado if mensaje_descifrado else "No se pudo descifrar correctamente."
+def descifrarOM(mensaje_cifrado_om, orden_om, diccionario_om, mensaje_original_om):
+    diccionario_inverso_om = construir_diccionario_inverso_om(diccionario_om, orden_om)
+    mensaje_descifrado_om = backtrack(mensaje_cifrado_om, diccionario_inverso_om, [], 0, orden_om, mensaje_original_om)
+    return mensaje_descifrado_om if mensaje_descifrado_om else "No se pudo descifrar correctamente."
 
 def ordenMayor():
-    diccionario = {
+    diccionario_om = {
         "a": ["a", "e"],
         "b": ["b", "v"],
         "c": ["c", "k"],
@@ -259,36 +259,36 @@ def ordenMayor():
         opcion = input("Ingrese una opción: ")
 
         if opcion == "1":
-            mensaje_original = input("Ingrese el mensaje a cifrar: ")
+            mensaje_original_om = input("Ingrese el mensaje a cifrar: ")
             while True:
                 try:
-                    orden = int(input("Ingrese el orden del cifrado (número entero positivo): "))
-                    if orden > 0:
+                    orden_om = int(input("Ingrese el orden del cifrado (número entero positivo): "))
+                    if orden_om > 0:
                         break
                     else:
                         print("El orden del cifrado debe ser un número entero positivo.")
                 except ValueError:
                     print("Entrada no válida. Ingrese un número entero.")
-            texto_cifrado = cifrarOM(mensaje_original, orden, diccionario)
-            print("Texto cifrado:", texto_cifrado)
+            texto_cifrado_om = cifrarOM(mensaje_original_om, orden_om, diccionario_om)
+            print("Texto cifrado:", texto_cifrado_om)
 
         elif opcion == "2":
-            if mensaje_original is None:
+            if mensaje_original_om is None:
                 print("Primero debe cifrar un mensaje.")
                 continue
 
-            mensaje_cifrado = input("Ingrese el mensaje cifrado: ")
+            mensaje_cifrado_om = input("Ingrese el mensaje cifrado: ")
             while True:
                 try:
-                    orden = int(input("Ingrese el orden del cifrado (número entero positivo): "))
-                    if orden > 0:
+                    orden_om = int(input("Ingrese el orden del cifrado (número entero positivo): "))
+                    if orden_om > 0:
                         break
                     else:
                         print("El orden del cifrado debe ser un número entero positivo.")
                 except ValueError:
                     print("Entrada no válida. Ingrese un número entero.")
-            texto_descifrado = descifrarOM(mensaje_cifrado, orden, diccionario, mensaje_original)
-            print("Texto descifrado:", texto_descifrado)
+            texto_descifrado_om = descifrarOM(mensaje_cifrado_om, orden_om, diccionario_om, mensaje_original_om)
+            print("Texto descifrado:", texto_descifrado_om)
 
         elif opcion == "3":
             print("Saliendo del programa...")
